@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<HTML>
+<HEAD>
+    <title>Real-Time Customer Risk Rating</title>
+    
+    <script>
+        function calculateRiskRating(){
+            alert("Customer risk rating : High Risk");
+        }
+    
+    </script>
+    
+    
+</HEAD>
+<BODY>
+    <center> <h1 style="background-color:DodgerBlue;">Real-Time Customer Risk Rating</h1>
+    </center>
+    <hr>
+    
+    <img src="img/img01.png" alt="KYC" width="804" height="242">
+    <hr>
+    
+    
+    <table style="width:100%">
+        <tr>
+            <td>Name</td>
+            <td><input type="text" name="customerName"></td>
+        </tr>
+        <tr>
+            <td>ID / Passport Number</td>
+            <td><input type="text" name="idNumber"></td>
+        </tr>
+        <tr>
+            <td>Gender</td>
+            <td><input type="radio" name="gender" value="male" checked> Male
+  <input type="radio" name="gender" value="female"> Female<br></td>
+        </tr>
+        <tr>
+            <td>Nationality</td>
+            <td><input type="text" name="nationality"></td>
+        </tr>
+        <tr>
+            <td>Date of Birth</td>
+            <td><input type="text" name="DOB"></td>
+        </tr>
+        <tr>
+            <td>Status</td>
+            <td>
+                <input type="radio" name="resident" value="resident" checked> Resident
+                <input type="radio" name="resident" value="non-resident"> Non-Resident<br>
+            </td>
+        </tr>
+        <tr>
+            <td>Source of Fund</td>
+            <td><input type="text" name="sourceOfFund"></td>
+        </tr>
+        <tr>
+            <td>Customer Segmentation</td>
+            <td>
+                <input type="radio" name="customerSegmentation" value="individual" checked> Individual
+                <input type="radio" name="customerSegmentation" value="non-individual"> Non-Individual<br>
+            </td>
+        </tr>
+        <tr>
+            <td>Geography</td>
+            <td>
+                <input type="radio" name="geography" value="highRisk" checked> High Risk Jurisdiction
+                <input type="radio" name="geography" value="lowRisk"> Low Risk Jurisdiction<br>
+            </td>
+        </tr>
+        <tr>
+            <td>Industry</td>
+            <td>
+                
+                
+                <select name="industry">
+                  <option value="cash">Cash-based intensive</option>
+                  <option value="profesional">Profesional Services</option>
+                  <option value="non-profit-organization">Non-Profit Organization</option>
+                  <option value="charities">Charities</option>
+                  <option value="club">Clubs</option>
+                    <option value="association">Associations</option>
+                    <option value="religious_body">Religious Body</option>
+                <option value="foundation">Foundation</option>
+                    
+                </select>
+                
+                
+                
+                
+            </td>
+        </tr>
+        <tr>
+            <td>Delivery Channel</td>
+            <td>
+                <input type="radio" name="deliveryChannel" value="face2face" checked> Face to Face
+                <input type="radio" name="deliveryChannel" value="online"> Online
+            </td>
+        </tr>
+        <tr>
+            <td>Name Screening</td>
+            <td>
+                <input type="radio" name="pep" value="pepYes" checked> Politically Exposed Person (PEP)
+                <input type="radio" name="pep" value="pepNo"> Non-Politically Exposed Person (PEP)
+            </td>
+        </tr>
+        <tr>
+            <td>Sanction Screening</td>
+            <td>
+                <input type="radio" name="sanction" value="sanctionYes" checked> Yes
+                <input type="radio" name="sanction" value="sanctionNo"> No
+            </td>
+        </tr>
+        <tr>
+            <td>Amount of transaction</td>
+            <td>
+                <input type="text" name="TXNAmount">
+            </td>
+        </tr>
+        
+        <tr>
+            <td>
+                <h4>Beneficiary</h4>
+            </td>
+        </tr>
+        
+        <tr>
+            <td>Name</td>
+            <td><input type="text" size="50" name="beneficiaryName"></td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td><textarea rows="4" cols="50"></textarea></td>
+        </tr>
+        
+        <tr>
+            <td>Contact No.</td>
+            <td><input type="text" size="50" name="beneficiaryContactNo">
+            </td>
+
+        </tr>
+        <tr></tr>
+        <tr></tr>
+        <tr></tr>
+        <tr>
+        <td></td>
+        <td><input type="submit" value="Proceed" onclick="calculateRiskRating()"></td>
+        </tr>
+        
+        
+    </table>
+    
+    
+</BODY>
+</HTML>
