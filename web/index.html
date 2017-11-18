@@ -3,9 +3,68 @@
 <HEAD>
     <title>Real-Time Customer Risk Rating</title>
     
+    <script src="js/jquery-3.2.1.min.js"></script>
+    
     <script>
         function calculateRiskRating(){
-            alert("Customer risk rating : High Risk");
+            
+            // alert("Customer risk rating : High Risk");
+            // Customer Segmentation
+            var customerSegmentationRisk = $("#customerSegmentation").val();
+            //alert("customerSegmentation Risk : " + customerSegmentationRisk);
+            
+            // alert($("#customerSegmentation").val() + " : " + $("#customerSegmentation option:selected").text());
+            
+            // Geography Risk
+            var geographyRisk = $('#geography:checked').val();
+            //alert("Geography Risk : " + geographyRisk);
+            
+            // Industry Risk
+            var IndustryRisk = $("#industry").val();
+            //alert("Industry Risk :" + IndustryRisk);
+            
+            // DeliveryChannelRisk deliveryChannel
+            var deliveryChannelRisk = $('#deliveryChannel:checked').val();
+            //alert("deliveryChannelRisk:" + deliveryChannelRisk);
+            
+            // NameScreeningRisk
+            var NameScreeningRisk = $('#nameScreening:checked').val();
+            //alert("NameScreeningRisk:" + NameScreeningRisk);
+            
+            // Sanction Risk
+            var sanctionRisk = $('#sanctionRisk:checked').val();
+            //alert("sanctionRisk:" + sanctionRisk);
+            
+            var totalCustomerRisk = Number(customerSegmentationRisk) + Number(geographyRisk) + Number(IndustryRisk) + Number(deliveryChannelRisk) + Number(NameScreeningRisk) + Number(sanctionRisk); 
+            
+            //alert("totalCustomerRisk : " + totalCustomerRisk);
+            
+            // Risk Scoring
+            var RiskScoring = '';
+            
+            if (Number(totalCustomerRisk) <= 5 ){ 
+                RiskScoring = "Low Risk";
+            }
+            
+            
+            else if (Number(totalCustomerRisk) <= 10 ) {
+                RiskScoring = "Medium Risk";
+            }
+            
+            
+            else if (Number(totalCustomerRisk) <= 15 ) {
+                RiskScoring = "High Risk";
+            }
+                
+            else {
+                 RiskScoring = "Unacceptable";
+            }
+               
+            
+            alert("Customer Risk Rating : " + RiskScoring);
+            
+            
+            
         }
     
     </script>
@@ -268,9 +327,6 @@
                     <option value="Zambia">Zambia</option>
                     <option value="Zimbabwe">Zimbabwe</option>
                     
-                    
-                    
-                
                 </select>
             </td>
         </tr>
@@ -292,31 +348,39 @@
         <tr>
             <td>Customer Segmentation</td>
             <td>
-                <input type="radio" name="customerSegmentation" value="individual" checked> Individual
+                <select id="customerSegmentation">
+                    <option value="3">High Net Worth Individual</option>
+                    <option value="1">Salaried Employee</option>
+                    <option value="2">Business</option>
+                    <option value="4">No Employment</option>
+                    <option value="3">No Fixed Income</option>
+                
+                </select>
+                
+                <input type="radio" name="customerSegmentation" value="individual"> Individual
                 <input type="radio" name="customerSegmentation" value="non-individual"> Non-Individual<br>
             </td>
         </tr>
         <tr>
             <td>Geography</td>
             <td>
-                <input type="radio" name="geography" value="highRisk" checked> High Risk Jurisdiction
-                <input type="radio" name="geography" value="lowRisk"> Low Risk Jurisdiction<br>
+                <input type="radio" id="geography" value="4"> High Risk Jurisdiction
+                <input type="radio" id="geography" value="2"> Low Risk Jurisdiction<br>
             </td>
         </tr>
         <tr>
             <td>Industry</td>
             <td>
-                
-                
-                <select name="industry">
-                  <option value="cash">Cash-based intensive</option>
-                  <option value="profesional">Profesional Services</option>
-                  <option value="non-profit-organization">Non-Profit Organization</option>
-                  <option value="charities">Charities</option>
-                  <option value="club">Clubs</option>
-                    <option value="association">Associations</option>
-                    <option value="religious_body">Religious Body</option>
-                <option value="foundation">Foundation</option>
+                <select id="industry">
+                  <option value="4">Cash-based Industries</option>
+                  <option value="2">Profesional Services</option>
+                  <option value="2">Military</option>
+                  <option value="3">Social Security and Walfare</option>
+                  <option value="3">Charities</option>
+                  <option value="3">Clubs</option>
+                  <option value="3">Associations</option>
+                  <option value="3">Religious Organizations</option>
+                  <option value="3">Foundation</option>
                     
                 </select>
                 
@@ -328,22 +392,25 @@
         <tr>
             <td>Delivery Channel</td>
             <td>
-                <input type="radio" name="deliveryChannel" value="face2face" checked> Face to Face
-                <input type="radio" name="deliveryChannel" value="online"> Online
+                <input type="radio" id="deliveryChannel" value="2" > Face to Face
+                <input type="radio" id="deliveryChannel" value="4"> Online
             </td>
         </tr>
         <tr>
             <td>Name Screening</td>
             <td>
-                <input type="radio" name="pep" value="pepYes" checked> Politically Exposed Person (PEP)
-                <input type="radio" name="pep" value="pepNo"> Non-Politically Exposed Person (PEP)
+                <input type="radio" id="nameScreening" value="3" > Politically Exposed Person (PEP)
+                <input type="radio" id="nameScreening" value="3"> Special Interest Person (SIP)
+                <input type="radio" id="nameScreening" value="4"> Specified Person / Entities (SP / SE)
+                <input type="radio" id="nameScreening" value="0"> Not Applicable
+                
             </td>
         </tr>
         <tr>
             <td>Sanction Screening</td>
             <td>
-                <input type="radio" name="sanction" value="sanctionYes" checked> Yes
-                <input type="radio" name="sanction" value="sanctionNo"> No
+                <input type="radio" id="sanctionRisk" value="4"> Yes
+                <input type="radio" id="sanctionRisk" value="0"> No
             </td>
         </tr>
         <tr>
