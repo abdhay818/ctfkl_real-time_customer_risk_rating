@@ -6,6 +6,28 @@
     <script src="js/jquery-3.2.1.min.js"></script>
     
     <script>
+        
+        var GeographyRiskGlobal = '';
+        
+        function setCountryJurisdiction(){
+            
+            var highRiskCountries = ["Bosnia and Herzegovina", "Korea, Republic of", "Ethiopia", "Iran", "Iraq", "Sri Lanka", "Syria", "Trinidad and Tobago", "Tunisia", "Vanuatu", "Yemen"];
+            
+            var a = highRiskCountries.indexOf($("#moneySendTo option:selected").text());
+            
+            // If not found, set to Low Risk Jurisdiction
+            if (a == -1) {
+                //alert("Low risk country");
+                $("#geographyLowRisk").prop('checked', true);
+                GeographyRiskGlobal = $("#geographyLowRisk").val();
+            }else {
+                //alert("High risk country");
+                $("#geographyHighRisk").prop('checked', true);
+                GeographyRiskGlobal = $("#geographyHighRisk").val();
+            }
+            
+        }
+        
         function calculateRiskRating(){
             
             // alert("Customer risk rating : High Risk");
@@ -16,8 +38,8 @@
             // alert($("#customerSegmentation").val() + " : " + $("#customerSegmentation option:selected").text());
             
             // Geography Risk
-            var geographyRisk = $('#geography:checked').val();
-            //alert("Geography Risk : " + geographyRisk);
+            // var geographyRisk = $('#geographyRisk:checked').val();
+            // alert("Geography Risk : " + GeographyRiskGlobal);
             
             // Industry Risk
             var IndustryRisk = $("#industry").val();
@@ -35,7 +57,7 @@
             var sanctionRisk = $('#sanctionRisk:checked').val();
             //alert("sanctionRisk:" + sanctionRisk);
             
-            var totalCustomerRisk = Number(customerSegmentationRisk) + Number(geographyRisk) + Number(IndustryRisk) + Number(deliveryChannelRisk) + Number(NameScreeningRisk) + Number(sanctionRisk); 
+            var totalCustomerRisk = Number(customerSegmentationRisk) + Number(GeographyRiskGlobal) + Number(IndustryRisk) + Number(deliveryChannelRisk) + Number(NameScreeningRisk) + Number(sanctionRisk); 
             
             //alert("totalCustomerRisk : " + totalCustomerRisk);
             
@@ -72,13 +94,23 @@
     
 </HEAD>
 <BODY>
-    <center> <h1 style="background-color:DodgerBlue;">Real-Time Customer Risk Rating</h1>
-    </center>
+    
     <hr>
     
+    <div style="font-size: 60px; 
+                background-color: #FFFF00; 
+                color: blue;
+                text-align: center;
+                padding:20px; margin:20px;
+                border: solid 3px black;" 
+               id="customerRiskRatingArea">
+    Real-Time Customer Risk Rating
+    </div>
+    
+    <!--
     <img src="img/img01.png" alt="KYC" width="804" height="242">
     <hr>
-    
+    -->
     
     <table style="width:100%">
         <tr>
@@ -434,7 +466,7 @@
             <td>Country</td>
             
             <td>
-                <select id="moneySendTo">
+                <select onchange="setCountryJurisdiction()" id="moneySendTo">
                     <option value="Afghanistan">Afghanistan</option>
                     <option value="Albania">Albania</option>
                     <option value="Algeria">Algeria</option>
@@ -674,8 +706,8 @@
         <tr>
             <td>Geography Risk</td>
             <td>
-                <input type="radio" id="geography" value="4"> High Risk Jurisdiction
-                <input type="radio" id="geography" value="2"> Low Risk Jurisdiction<br>
+                <input type="radio" id="geographyHighRisk" name="geographyRisk" value="4"> High Risk Jurisdiction
+                <input type="radio" id="geographyLowRisk" name="geographyRisk" value="2"> Low Risk Jurisdiction<br>
             </td>
 
         </tr>
