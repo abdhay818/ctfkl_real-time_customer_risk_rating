@@ -1,0 +1,180 @@
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="./css/bootstrap.min.css" />
+<style>
+
+.links line {
+  stroke: #999;
+  stroke-opacity: 0.6;
+}
+
+.nodes circle {
+  stroke: #fff;
+  stroke-width: 1.5px;
+}
+
+</style>
+<svg width="970" height="600"></svg>
+<script src="./js/d3.v4.min.js"></script>
+<script src="./js/jquery.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+
+<script>
+
+
+var svg = d3.select("svg"),
+    width = +svg.attr("width"),
+    height = +svg.attr("height");
+
+var color = d3.scaleOrdinal(d3.schemeCategory20);
+
+var simulation = d3.forceSimulation()
+    .force("link", d3.forceLink().id(function(d) { return d.id; }))
+    .force("charge", d3.forceManyBody())
+    .force("center", d3.forceCenter(width / 2, height / 2));
+
+
+d3.json("terr.json", function(error, graph) {
+  if (error) throw error;
+
+  var link = svg.append("g")
+      .attr("class", "links")
+    .selectAll("line")
+    .data(graph.links)
+    .enter().append("line")
+      .attr("stroke-width", function(d) { return Math.sqrt(d.weight); });
+
+  var node = svg.append("g")
+      .attr("class", "nodes")
+    .selectAll("circle")
+    .data(graph.nodes)
+    .enter().append("circle")
+      .attr("r", 10)
+      .attr("fill", function(d) { return color(d.score); })
+      .call(d3.drag()
+          .on("start", dragstarted)
+          .on("drag", dragged)
+          .on("end", dragended));
+	
+  node.append("title")
+      .text(function(d) { return d.id; });
+	 
+	node.append("note")
+		.text(function(d) { return d.note;});
+
+		node.append("score")
+		.text(function(d) { return d.score;});
+	
+	
+
+	$("circle").click(function(){
+		
+		var note = $(this).find("note:first").text();
+		var name =  $(this).find("title:first").text();
+		var score =  $(this).find("score:first").text();
+
+		$("#nameBox").text(name);
+		$("#infoBox").text(note);
+		$("#scoreBox").text(score);
+
+		$(".info").show();
+
+		
+	}); //(node);
+	
+	$.each($("circle"),function(index,row){
+		var wrapper = $(row).clone().empty('');
+		
+
+		if(row.cx > 0 & row.cy > 0){
+			var title = $(row).find("title:first").text();
+			$("svg").append("<div style='position:absolute;left:"+row.cx+"px;top:"+row.cy+"'>" + title +" </div>");	
+
+			alert(title);
+		}
+	});
+
+  simulation
+      .nodes(graph.nodes)
+      .on("tick", ticked);
+
+  simulation.force("link")
+      .links(graph.links);
+
+  function ticked() {
+    link
+        .attr("x1", function(d) { return d.source.x; })
+        .attr("y1", function(d) { return d.source.y; })
+        .attr("x2", function(d) { return d.target.x; })
+        .attr("y2", function(d) { return d.target.y; });
+
+    node
+        .attr("cx", function(d) { return d.x; })
+        .attr("cy", function(d) { return d.y; });
+  }
+	
+});
+
+function dragstarted(d) {
+  if (!d3.event.active) simulation.alphaTarget(0.3).restart();
+  d.fx = d.x;
+  d.fy = d.y;
+}
+
+function dragged(d) {
+  d.fx = d3.event.x;
+  d.fy = d3.event.y;
+
+	
+  
+}
+
+function dragended(d) {
+  if (!d3.event.active) simulation.alphaTarget(0);
+  d.fx = null;
+  d.fy = null;
+
+  
+}
+
+$(document).ready(function(){
+
+
+
+});
+</script>
+</head>
+
+<body>
+	
+	
+
+	<div class='container info' style='position:absolute;z-index:1;top:40px;right:40px;background-color:#2299AA;opacity:0.7;width:400px;display:none;'>
+		<div class='row'>
+			<div class='col-lg-12'>
+				<div class="panel panel-default">
+					<div class="panel-heading"> </div>
+					<div class="panel-body">
+						<div class='container'>
+							<div class='row'>
+								<div class='col-lg-3'>Name : </div>
+								<div class='col-lg-9' id='nameBox'></div>
+							</div>
+							<div class='row'>
+								<div class='col-lg-3'>Risk Level: </div>
+								<div class='col-lg-9' id='scoreBox'></div>
+							</div>
+							<div class='row'>
+								<div class='col-lg-3'>Info : </div>
+								<div class='col-lg-9' id='infoBox'></div>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>

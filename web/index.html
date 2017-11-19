@@ -3,11 +3,37 @@
 <HEAD>
     <title>Real-Time Customer Risk Rating</title>
     
-    <script src="js/jquery-3.2.1.min.js"></script>
+    <script src="js/jquery.min.js"></script>
     
     <script>
         
         var GeographyRiskGlobal = '';
+        var globalRiskScore = '';
+        
+        function updateCustomerRating(){
+            
+            globalRiskScore = Number($("#customerSegmentation").val());
+            //alert("Customer Segmentation : " + $("#customerSegmentation").val());
+            
+            globalRiskScore = Number(globalRiskScore)+ Number($("#industry").val());
+            // alert("Industry : " + $("#industry").val());
+            
+            globalRiskScore = Number(globalRiskScore)+ Number($('#deliveryChannel:checked').val());
+            // alert("Delivery Channel : " + $('#deliveryChannel:checked').val());
+            
+            globalRiskScore = Number(globalRiskScore)+ Number($("#nameScreening").val());
+            //alert("Name Screening : " + $("#nameScreening").val());
+            
+            globalRiskScore = Number(globalRiskScore)+ Number($('#sanctionRisk:checked').val());
+            // alert("Sanction List : " + $('#sanctionRisk:checked').val());
+            
+            globalRiskScore = Number(globalRiskScore)+ Number(GeographyRiskGlobal);
+            
+            
+            // Update DIV area
+            $("#ratingArea").text("Risk Score : " + globalRiskScore);
+            
+        }
         
         function setCountryJurisdiction(){
             
@@ -62,28 +88,46 @@
             //alert("totalCustomerRisk : " + totalCustomerRisk);
             
             // Risk Scoring
-            var RiskScoring = '';
+            var RiskScoring = 'Low Risk';
             
-            if (Number(totalCustomerRisk) <= 5 ){ 
+            if (Number(globalRiskScore) <= 5 ){ 
                 RiskScoring = "Low Risk";
+                
             }
             
             
-            else if (Number(totalCustomerRisk) <= 10 ) {
+            else if (Number(globalRiskScore) <= 10 ) {
                 RiskScoring = "Medium Risk";
+                
+                
             }
             
             
-            else if (Number(totalCustomerRisk) <= 15 ) {
+            else if (Number(globalRiskScore) <= 15 ) {
                 RiskScoring = "High Risk";
+                
             }
                 
             else {
                  RiskScoring = "Unacceptable";
+                
             }
                
             
-            alert("Customer Risk Rating : " + RiskScoring);
+            // alert("Customer Risk Rating : " + RiskScoring);
+            // Update DIV area
+            $("#ratingArea").text("Final Score : " + globalRiskScore + "  (" + RiskScoring + ")");
+            
+            if (Number(globalRiskScore) <= 5 ){
+                $("#ratingArea").css("background-color","green");
+            }else if (Number(globalRiskScore) <= 10 ){
+                $("#ratingArea").css("background-color","yellow");
+            } else if (Number(globalRiskScore) <= 15 ){
+                $("#ratingArea").css("background-color","orange");
+            } else {
+                $("#ratingArea").css("background-color","red");
+            }
+            
             
             
             
@@ -95,8 +139,7 @@
 </HEAD>
 <BODY>
     
-    <hr>
-    
+  
     <div style="font-size: 60px; 
                 background-color: #FFFF00; 
                 color: blue;
@@ -105,6 +148,15 @@
                 border: solid 3px black;" 
                id="customerRiskRatingArea">
     Real-Time Customer Risk Rating
+    </div>
+    
+    <div id="ratingArea" 
+         style="position: absolute;
+                text-align: center;  
+                top:140px; right: 20px; border: solid 5px yellow;
+                font-size: 25px; padding:8px; margin:8px;
+                background-color: #AABBCC;">
+    Risk Score :  
     </div>
     
     <!--
@@ -382,7 +434,8 @@
         <tr>
             <td>Customer Segmentation</td>
             <td>
-                <select id="customerSegmentation">
+                <select onchange="updateCustomerRating();" id="customerSegmentation">
+                    <option value="0">Choose..</option>
                     <option value="3">High Net Worth Individual</option>
                     <option value="1">Salaried Employee</option>
                     <option value="2">Business</option>
@@ -391,15 +444,15 @@
                 
                 </select>
                 
-                <input type="radio" name="customerSegmentation" value="individual"> Individual
-                <input type="radio" name="customerSegmentation" value="non-individual"> Non-Individual<br>
+                
             </td>
         </tr>
         
         <tr>
             <td>Industry</td>
             <td>
-                <select id="industry">
+                <select onchange="updateCustomerRating();" id="industry">
+                  <option value="0">Choose..</option>
                   <option value="4">Cash-based Industries</option>
                   <option value="2">Profesional Services</option>
                   <option value="2">Military</option>
@@ -420,50 +473,47 @@
         <tr>
             <td>Delivery Channel</td>
             <td>
-                <input type="radio" name="deliveryChannel" id="deliveryChannel" value="2"> Face to Face
-                <input type="radio" name="deliveryChannel" id="deliveryChannel" value="4"> Online
+                <input onchange="updateCustomerRating();" type="radio" name="deliveryChannel" id="deliveryChannel" checked="checked" value="2"> Face to Face
+                <input onchange="updateCustomerRating();" type="radio" name="deliveryChannel" id="deliveryChannel" value="4"> Online
             </td>
         </tr>
         <tr>
             <td>Name Screening</td>
             <td>
-                <input type="radio" name="nameScreening" id="nameScreening" value="3" > Politically Exposed Person (PEP)
-                <input type="radio" name="nameScreening" id="nameScreening" value="3"> Special Interest Person (SIP)
-                <input type="radio" name="nameScreening" id="nameScreening" value="4"> Specified Person / Entities (SP / SE)
-                <input type="radio" name="nameScreening" id="nameScreening" value="0"> Not Applicable
-                
+                <select onchange="updateCustomerRating();" id="nameScreening">
+                    <option value="0">Choose..</option>
+                    <option value="3">Politically Exposed Person (PEP)</option>
+                    <option value="3">Special Interest Person (SIP)</option>
+                    <option value="4">Specified Person / Entities (SP / SE)</option>
+                    <option value="0">Not Applicable</option>
+                </select>
             </td>
         </tr>
         <tr>
             <td>Sanction Screening</td>
             <td>
                 <input type="radio" name="sanctionRisk" id="sanctionRisk" value="4"> Yes
-                <input type="radio" name="sanctionRisk" id="sanctionRisk" value="0"> No
+                <input type="radio" name="sanctionRisk" id="sanctionRisk" checked="checked" value="0"> No
             </td>
         </tr>
         <tr>
             <td>Amount of transaction</td>
             <td>
-                <input type="text" name="TXNAmount">
+                MYR <input type="number" min="0" name="TXNAmount">
             </td>
         </tr>
         
-        <tr>
-            <td>
-                <h4>Beneficiary</h4>
-            </td>
-        </tr>
         
         <tr>
-            <td>Name</td>
+            <td>Beneficiary Name</td>
             <td><input type="text" size="50" name="beneficiaryName"></td>
         </tr>
         <tr>
-            <td>Address</td>
+            <td>Beneficiary Address</td>
             <td><textarea rows="4" cols="50"></textarea></td>
         </tr>
         <tr>
-            <td>Country</td>
+            <td>Beneficiary Country</td>
             
             <td>
                 <select onchange="setCountryJurisdiction()" id="moneySendTo">
@@ -707,7 +757,7 @@
             <td>Geography Risk</td>
             <td>
                 <input type="radio" id="geographyHighRisk" name="geographyRisk" value="4"> High Risk Jurisdiction
-                <input type="radio" id="geographyLowRisk" name="geographyRisk" value="2"> Low Risk Jurisdiction<br>
+                <input type="radio" id="geographyLowRisk" name="geographyRisk" checked="checked" value="2"> Low Risk Jurisdiction<br>
             </td>
 
         </tr>
